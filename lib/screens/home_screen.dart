@@ -1,10 +1,41 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'cart_screen.dart';
 import 'detail_screen.dart';
 import '../models/product.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Data> products = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadProducts();
+  }
+
+  Future<void> loadProducts() async {
+    try {
+      final String response = await rootBundle.loadString(
+        'assets/products.json',
+      );
+      final Map<String, dynamic> jsonData = json.decode(response);
+      final productResponse = Product.fromJson(jsonData);
+
+      setState(() {
+        products = productResponse.data ?? [];
+      });
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,19 +81,23 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              height: 100,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: const Center(
-                child: Text(
-                  'Banner',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blueAccent,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.network(
+                'https://wantapi.com/assets/banner.png',
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  height: 100,
+                  color: Colors.blue.shade50,
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'Banner',
+                    style: TextStyle(
+                      color: Colors.blueAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
@@ -74,34 +109,21 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 15,
-                childAspectRatio: 0.75,
-                children: [
-                  _buildDummyCard(
-                    context,
-                    Product(
-                      name: 'AirPods Pro',
-                      price: '\$249',
-                      description:
-                          'Active Noise Cancellation and personalized Spatial Audio.',
-                      imageUrl: '',
+              child: products.isEmpty
+                  ? const Center(child: CircularProgressIndicator())
+                  : GridView.builder(
+                      itemCount: products.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 15,
+                            crossAxisSpacing: 15,
+                            childAspectRatio: 0.75,
+                          ),
+                      itemBuilder: (context, index) {
+                        return _buildProductCard(context, products[index]);
+                      },
                     ),
-                  ),
-                  _buildDummyCard(
-                    context,
-                    Product(
-                      name: 'HomePod Mini',
-                      price: '\$99',
-                      description:
-                          'Surprising sound for a speaker of its size.',
-                      imageUrl: '',
-                    ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),
@@ -109,7 +131,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDummyCard(BuildContext context, Product product) {
+  Widget _buildProductCard(BuildContext context, Data product) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -131,20 +153,30 @@ class HomeScreen extends StatelessWidget {
           children: [
             Expanded(
               child: Container(
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: const Center(child: Icon(Icons.image)),
+                child: (product.image != null && product.image!.isNotEmpty)
+                    ? Image.network(
+                        product.image!,
+                        fit: BoxFit.contain,
+                        errorBuilder: (context, error, stackTrace) =>
+                            const Icon(Icons.broken_image, color: Colors.grey),
+                      )
+                    : const Icon(Icons.image, color: Colors.grey),
               ),
             ),
             const SizedBox(height: 10),
             Text(
-              product.name,
+              product.name ?? 'Unknown',
               style: const TextStyle(fontWeight: FontWeight.bold),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             Text(
-              product.price,
+              product.price ?? '\$0.00',
               style: const TextStyle(color: Colors.blueAccent),
             ),
           ],

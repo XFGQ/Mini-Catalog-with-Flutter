@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class DetailScreen extends StatelessWidget {
-  final Product product;
+  final Data product;
 
   const DetailScreen({super.key, required this.product});
 
@@ -16,42 +16,58 @@ class DetailScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Column(
-        children: [
-          // Ürün Resmi
-          Container(
-            height: 300,
-            width: double.infinity,
-            color: Colors.grey.shade200,
-            child: const Icon(Icons.image, size: 100),
-          ),
-          const SizedBox(height: 20),
-          // Ürün Bilgileri
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  product.name,
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  product.price,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.blueAccent,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(product.description),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: 300,
+              width: double.infinity,
+              color: Colors.grey.shade100,
+              alignment: Alignment.center,
+              child: (product.image != null && product.image!.isNotEmpty)
+                  ? Image.network(
+                      product.image!,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.broken_image,
+                        size: 100,
+                        color: Colors.grey,
+                      ),
+                    )
+                  : const Icon(Icons.image, size: 100, color: Colors.grey),
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    product.name ?? '',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.price ?? '',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    product.description ?? '',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
