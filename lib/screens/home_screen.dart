@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'cart_screen.dart';
+import 'detail_screen.dart';
+import '../models/product.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -71,7 +73,6 @@ class HomeScreen extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const SizedBox(height: 10),
-
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -79,11 +80,25 @@ class HomeScreen extends StatelessWidget {
                 crossAxisSpacing: 15,
                 childAspectRatio: 0.75,
                 children: [
-                  _buildDummyCard('AirPods Pro', '\$249', Colors.grey.shade800),
                   _buildDummyCard(
-                    'HomePod Mini',
-                    '\$99',
-                    Colors.orange.shade100,
+                    context,
+                    Product(
+                      name: 'AirPods Pro',
+                      price: '\$249',
+                      description:
+                          'Active Noise Cancellation and personalized Spatial Audio.',
+                      imageUrl: '',
+                    ),
+                  ),
+                  _buildDummyCard(
+                    context,
+                    Product(
+                      name: 'HomePod Mini',
+                      price: '\$99',
+                      description:
+                          'Surprising sound for a speaker of its size.',
+                      imageUrl: '',
+                    ),
                   ),
                 ],
               ),
@@ -94,29 +109,46 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDummyCard(String title, String price, Color color) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: color,
-                borderRadius: BorderRadius.circular(10),
+  Widget _buildDummyCard(BuildContext context, Product product) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailScreen(product: product),
+          ),
+        );
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Center(child: Icon(Icons.image)),
               ),
             ),
-          ),
-          const SizedBox(height: 10),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-          Text(price, style: const TextStyle(color: Colors.blueAccent)),
-        ],
+            const SizedBox(height: 10),
+            Text(
+              product.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            Text(
+              product.price,
+              style: const TextStyle(color: Colors.blueAccent),
+            ),
+          ],
+        ),
       ),
     );
   }
