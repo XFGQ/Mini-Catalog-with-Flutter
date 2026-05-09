@@ -1,0 +1,26 @@
+[
+  {
+    "name": "AirPods Pro (2nd Gen)",
+    "price": "$249",
+    "description": "Active Noise Cancellation and personalized Spatial Audio.",
+    "imageUrl": "https://wantapi.com/assets/banner.png"
+  },
+  {
+    "name": "HomePod Mini",
+    "price": "$99",
+    "description": "Surprising sound for a speaker of its size.",
+    "imageUrl": "https://wantapi.com/assets/banner.png"
+  },
+  {
+    "name": "MacBook Pro 14\"",
+    "price": "$1999",
+    "description": "M3 Pro chip, 18GB RAM, 512GB SSD.",
+    "imageUrl": "https://wantapi.com/assets/banner.png"
+  },
+  {
+    "name": "iPad Air",
+    "price": "$599",
+    "description": "Light. Speed. M1 chip.",
+    "imageUrl": "https://wantapi.com/assets/banner.png"
+  }
+]
