@@ -29,13 +29,10 @@ class DetailScreen extends StatelessWidget {
                   ? Image.network(
                       product.image!,
                       fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) => const Icon(
-                        Icons.broken_image,
-                        size: 100,
-                        color: Colors.grey,
-                      ),
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, size: 100),
                     )
-                  : const Icon(Icons.image, size: 100, color: Colors.grey),
+                  : const Icon(Icons.image, size: 100),
             ),
             const SizedBox(height: 20),
             Padding(
@@ -44,7 +41,7 @@ class DetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name ?? '',
+                    product.name ?? 'No Name',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -56,13 +53,29 @@ class DetailScreen extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.blueAccent,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   const SizedBox(height: 16),
-                  Text(
-                    product.description ?? '',
-                    style: const TextStyle(fontSize: 16),
+                  const Text(
+                    'Description',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
+                  const SizedBox(height: 8),
+                  Text(
+                    product.description ?? 'No description available.',
+                    style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  ),
+                  if (product.specs != null) ...[
+                    const SizedBox(height: 24),
+                    const Text(
+                      'Specifications :',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),

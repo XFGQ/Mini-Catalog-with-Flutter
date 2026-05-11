@@ -27,13 +27,14 @@ class _HomeScreenState extends State<HomeScreen> {
         'assets/products.json',
       );
       final Map<String, dynamic> jsonData = json.decode(response);
+
       final productResponse = Product.fromJson(jsonData);
 
       setState(() {
-        products = productResponse.data ?? [];
+        products = (productResponse.data ?? []).cast<Data>();
       });
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint("JSON Load Error: $e");
     }
   }
 
