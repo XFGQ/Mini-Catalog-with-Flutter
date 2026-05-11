@@ -53,7 +53,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) =>
                     (value == null || value.isEmpty) ? '' : null,
               ),
-              const SizedBox(height: 60),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {},
+                  child: const Text(
+                    'Forgot Password?',
+                    style: TextStyle(color: Colors.blue, fontSize: 12),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 height: 45,
@@ -62,14 +72,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (_formKey.currentState!.validate()) {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
                       );
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Colors.blue,
                     elevation: 0,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.zero,
@@ -80,6 +88,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Don't have an account? ",
+                    style: TextStyle(color: Colors.lightBlue, fontSize: 13),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      "Register",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
