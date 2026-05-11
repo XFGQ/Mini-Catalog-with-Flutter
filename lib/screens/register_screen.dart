@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import '../models/user_data.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -23,27 +23,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return digest.toString();
   }
 
-  Future<void> _registerUser() async {
+  void _registerUser() {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text.trim();
       String password = _passwordController.text.trim();
-
       String passwordHash = _hashPassword(password);
 
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('saved_username', username);
-      await prefs.setString('saved_password_hash', passwordHash);
+      registeredUsers.add(User(username: username, passwordHash: passwordHash));
 
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Registration successful!'),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 2),
-          ),
-        );
-        Navigator.pop(context);
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Registration successful!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
     }
   }
 
