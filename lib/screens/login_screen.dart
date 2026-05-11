@@ -3,6 +3,7 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import '../models/user_data.dart';
+import 'register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -124,7 +125,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(color: Colors.lightBlue, fontSize: 13),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const RegisterScreen(),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "Register",
                       style: TextStyle(
