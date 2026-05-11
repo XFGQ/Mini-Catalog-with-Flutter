@@ -78,9 +78,7 @@ class DetailScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     _buildSpecsList(product.specs!),
                   ],
-                  const SizedBox(
-                    height: 100,
-                  ), // Butonun üstüne binmemesi için boşluk
+                  const SizedBox(height: 100),
                 ],
               ),
             ),
