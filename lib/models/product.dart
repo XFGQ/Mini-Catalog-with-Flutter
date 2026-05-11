@@ -74,6 +74,8 @@ class Data {
   }
 }
 
+List<Data> cartItems = [];
+
 class Specs {
   String? chip;
   String? material;
