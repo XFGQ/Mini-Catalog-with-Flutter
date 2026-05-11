@@ -78,53 +78,77 @@ class DetailScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     _buildSpecsList(product.specs!),
                   ],
+                  const SizedBox(
+                    height: 100,
+                  ), // Butonun üstüne binmemesi için boşluk
                 ],
               ),
             ),
           ],
         ),
       ),
+      // --- SEPETE EKLE BUTONU BURADA ---
+      bottomNavigationBar: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ElevatedButton(
+            onPressed: () {
+              cartItems.add(product); // Global listeye ekle
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${product.name} sepete eklendi!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blueAccent,
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text(
+              'Add to Cart',
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          ),
+        ),
+      ),
     );
   }
-}
 
-Widget _buildSpecsList(Specs specs) {
-  final Map<String, dynamic> specsMap = specs.toJson();
-  final nonNullSpecs = specsMap.entries
-      .where((e) => e.value != null && e.value.toString().isNotEmpty)
-      .toList();
+  Widget _buildSpecsList(Specs specs) {
+    final Map<String, dynamic> specsMap = specs.toJson();
+    final nonNullSpecs = specsMap.entries
+        .where((e) => e.value != null && e.value.toString().isNotEmpty)
+        .toList();
 
-  if (nonNullSpecs.isEmpty) return const SizedBox.shrink();
-
-  return Column(
-    children: nonNullSpecs.map((entry) {
-      String keyName = entry.key[0].toUpperCase() + entry.key.substring(1);
-
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Text(
-                keyName,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.grey,
+    return Column(
+      children: nonNullSpecs.map((entry) {
+        String keyName = entry.key[0].toUpperCase() + entry.key.substring(1);
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  keyName,
+                  style: const TextStyle(color: Colors.grey),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Text(
-                entry.value.toString(),
-                style: const TextStyle(fontWeight: FontWeight.w500),
+              Expanded(
+                flex: 3,
+                child: Text(
+                  entry.value.toString(),
+                  style: const TextStyle(fontWeight: FontWeight.w500),
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    }).toList(),
-  );
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
 }
