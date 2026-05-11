@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
-import 'screens/cart_screen.dart';
-import 'screens/detail_screen.dart';
 
 void main() {
   runApp(const MiniCatalogApp());

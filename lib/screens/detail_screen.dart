@@ -75,6 +75,8 @@ class DetailScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    const SizedBox(height: 12),
+                    _buildSpecsList(product.specs!),
                   ],
                 ],
               ),
@@ -84,4 +86,45 @@ class DetailScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildSpecsList(Specs specs) {
+  final Map<String, dynamic> specsMap = specs.toJson();
+  final nonNullSpecs = specsMap.entries
+      .where((e) => e.value != null && e.value.toString().isNotEmpty)
+      .toList();
+
+  if (nonNullSpecs.isEmpty) return const SizedBox.shrink();
+
+  return Column(
+    children: nonNullSpecs.map((entry) {
+      String keyName = entry.key[0].toUpperCase() + entry.key.substring(1);
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Text(
+                keyName,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  color: Colors.grey,
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 3,
+              child: Text(
+                entry.value.toString(),
+                style: const TextStyle(fontWeight: FontWeight.w500),
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList(),
+  );
 }

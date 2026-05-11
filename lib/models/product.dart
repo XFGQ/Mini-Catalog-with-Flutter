@@ -159,4 +159,34 @@ class Specs {
     sensing = json['sensing'];
     size = json['size'];
   }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['chip'] = chip;
+    data['material'] = material;
+    data['camera'] = camera;
+    data['display'] = display;
+    data['battery'] = battery;
+    data['ports'] = ports;
+    data['weight'] = weight;
+    data['design'] = design;
+    data['colors'] = colors;
+    data['screen'] = screen;
+    data['pencil'] = pencil;
+    data['connectivity'] = connectivity;
+    data['case'] = caseType;
+    data['brightness'] = brightness;
+    data['gps'] = gps;
+    data['feature'] = feature;
+    data['carbon'] = carbon;
+    data['os'] = os;
+    data['control'] = control;
+    data['audio'] = audio;
+    data['driver'] = driver;
+    data['cancellation'] = cancellation;
+    data['materials'] = materials;
+    data['home'] = home;
+    data['sensing'] = sensing;
+    data['size'] = size;
+    return data;
+  }
 }
