@@ -32,20 +32,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         products = productResponse.data ?? [];
-        allProducts = products;
+        allProducts = List.from(products);
       });
     } catch (e) {
       debugPrint("JSON Load Error: $e");
     }
   }
 
+  void _filterProducts(String query) {
+    List<Data> results = [];
+    if (query.isEmpty) {
+      results = allProducts;
+    } else {
+      results = allProducts.where((product) {
+        final productName = product.name?.toLowerCase() ?? '';
+        final input = query.toLowerCase();
+        return productName.contains(input);
+      }).toList();
+    }
+
+    setState(() {
+      products = results;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         title: const Text(
           'Discover',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            color: Colors.black,
+          ),
         ),
         actions: [
           IconButton(
@@ -55,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(builder: (context) => const ProfileScreen()),
               );
             },
-            icon: const Icon(Icons.person_outline),
+            icon: const Icon(Icons.person_outline, color: Colors.black),
           ),
           IconButton(
             onPressed: () {
@@ -64,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 MaterialPageRoute(builder: (context) => const CartScreen()),
               );
             },
-            icon: const Icon(Icons.shopping_bag_outlined),
+            icon: const Icon(Icons.shopping_bag_outlined, color: Colors.black),
           ),
         ],
       ),
@@ -80,15 +104,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 20),
             TextField(
+              onChanged: (value) => _filterProducts(value),
               decoration: InputDecoration(
                 hintText: 'Search products',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search, color: Colors.grey),
                 filled: true,
                 fillColor: Colors.grey.shade100,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide.none,
                 ),
+                contentPadding: const EdgeInsets.symmetric(vertical: 15),
               ),
             ),
             const SizedBox(height: 20),
@@ -121,7 +147,12 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 10),
             Expanded(
               child: products.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child: Text(
+                        'No products found',
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
+                      ),
+                    )
                   : GridView.builder(
                       itemCount: products.length,
                       gridDelegate:
