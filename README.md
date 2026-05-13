@@ -71,6 +71,13 @@ flutter run
 ```bash
 flutter run -d linux
 ```
+### Android Build için
+
+**1. Terminali açın
+```bash
+flutter build apk
+```
+**2. apk. dosyasını build>app>outputs>flutter-apk dosya dizininde bulabilirsiniz
 
 ## Ekran Görüntüleri
 
