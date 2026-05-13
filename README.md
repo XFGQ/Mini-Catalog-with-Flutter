@@ -33,7 +33,7 @@ Eğer Android Studio yerine VS Code kullanıyorsanız, sanal cihazı (emülatör
 3. Arama çubuğuna `Flutter: Launch Emulator` yazın ve Enter'a basın. Bir android cihaz indirmiş olmanız gerekir.
 4. Çıkan listeden önceden oluşturduğunuz Android emülatörünü seçin.
 
-## 🚀 Kurulum ve Çalıştırma
+## Kurulum ve Çalıştırma
 
 Projeyi yerel ortamınıza indirmek ve bağımlılıkları kurmak için terminalinizde şu adımları izleyin:
 
