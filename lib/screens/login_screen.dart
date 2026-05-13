@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import '../models/user_data.dart';
 import 'register_screen.dart';
+import '../models/user_data.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -83,19 +83,28 @@ class _LoginScreenState extends State<LoginScreen> {
                       String inputUsername = _usernameController.text.trim();
                       String inputPassword = _passwordController.text.trim();
                       String inputHash = _hashPassword(inputPassword);
-                      print('Girdiğin Username: "$inputUsername"');
-                      print('Girdiğin Şifre Hashi: "$inputHash"');
-                      print('Sistemdeki Hash: "$registeredPasswordHash"');
-                      if (inputUsername == registeredUsername &&
-                          inputHash == registeredPasswordHash) {
+
+                      bool isUserFound = false;
+
+                      for (var user in registeredUsers) {
+                        if (user.username == inputUsername &&
+                            user.passwordHash == inputHash) {
+                          isUserFound = true;
+                          break;
+                        }
+                      }
+
+                      if (isUserFound) {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(
+                            builder: (context) => const HomeScreen(),
+                          ),
                         );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text(' Invalid username or password ! '),
+                            content: Text('Invalid username or password!'),
                             backgroundColor: Colors.redAccent,
                             duration: Duration(seconds: 2),
                           ),
