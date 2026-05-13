@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
         products = productResponse.data ?? [];
       });
     } catch (e) {
-      debugPrint(e.toString());
+      debugPrint("JSON Load Error: $e");
     }
   }
 
