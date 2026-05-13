@@ -200,7 +200,8 @@ class CartItem {
 }
 
 List<CartItem> cartItems = [];
-
+List<Data> favoriteItems = [];
+List<Data> allProducts = [];
 void addToCart(Data product) {
   bool isFound = false;
   for (var item in cartItems) {

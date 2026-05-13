@@ -17,6 +17,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    loadUsersFromStorage();
+  }
+
   String _hashPassword(String password) {
     var bytes = utf8.encode(password);
     var digest = sha256.convert(bytes);
@@ -63,16 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 validator: (value) =>
                     (value == null || value.isEmpty) ? '' : null,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: Colors.blue, fontSize: 12),
-                  ),
-                ),
-              ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
@@ -80,21 +76,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      String inputUsername = _usernameController.text.trim();
-                      String inputPassword = _passwordController.text.trim();
-                      String inputHash = _hashPassword(inputPassword);
+                      String inputUser = _usernameController.text.trim();
+                      String inputPass = _passwordController.text.trim();
+                      String inputHash = _hashPassword(inputPass);
 
-                      bool isUserFound = false;
+                      bool isFound = false;
 
                       for (var user in registeredUsers) {
-                        if (user.username == inputUsername &&
+                        if (user.username == inputUser &&
                             user.passwordHash == inputHash) {
-                          isUserFound = true;
+                          isFound = true;
+                          currentUser = user;
                           break;
                         }
                       }
 
-                      if (isUserFound) {
+                      if (isFound) {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
@@ -104,9 +101,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Invalid username or password!'),
-                            backgroundColor: Colors.redAccent,
-                            duration: Duration(seconds: 2),
+                            content: Text('Invalid credentials!'),
+                            backgroundColor: Colors.red,
                           ),
                         );
                       }
@@ -114,14 +110,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
-                    elevation: 0,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.zero,
-                    ),
+                    shape: const RoundedRectangleBorder(),
                   ),
                   child: const Text(
                     'SIGN IN',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
               ),
@@ -131,23 +124,19 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   const Text(
                     "Don't have an account? ",
-                    style: TextStyle(color: Colors.lightBlue, fontSize: 13),
+                    style: TextStyle(color: Colors.lightBlue),
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterScreen(),
-                        ),
-                      );
-                    },
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const RegisterScreen(),
+                      ),
+                    ),
                     child: const Text(
                       "Register",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        decoration: TextDecoration.underline,
                         color: Colors.blue,
                       ),
                     ),

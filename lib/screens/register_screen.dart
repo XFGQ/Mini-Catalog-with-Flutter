@@ -23,21 +23,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return digest.toString();
   }
 
-  void _registerUser() {
+  void _registerUser() async {
     if (_formKey.currentState!.validate()) {
       String username = _usernameController.text.trim();
       String password = _passwordController.text.trim();
       String passwordHash = _hashPassword(password);
 
       registeredUsers.add(User(username: username, passwordHash: passwordHash));
+      await saveUsersToStorage();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Registration successful!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-      Navigator.pop(context);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Registration successful!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.pop(context);
+      }
     }
   }
 
