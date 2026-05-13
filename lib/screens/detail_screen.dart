@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+import '../models/user_data.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   final Data product;
 
   const DetailScreen({super.key, required this.product});
 
   @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  @override
   Widget build(BuildContext context) {
+    bool isFavorite = false;
+    if (currentUser != null && widget.product.id != null) {
+      isFavorite = currentUser!.favoriteIds.contains(widget.product.id);
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Back'),
@@ -15,6 +26,26 @@ class DetailScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.red : Colors.black,
+            ),
+            onPressed: () async {
+              if (currentUser != null && widget.product.id != null) {
+                setState(() {
+                  if (isFavorite) {
+                    currentUser!.favoriteIds.remove(widget.product.id);
+                  } else {
+                    currentUser!.favoriteIds.add(widget.product.id!);
+                  }
+                });
+                await saveUsersToStorage();
+              }
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -25,9 +56,11 @@ class DetailScreen extends StatelessWidget {
               width: double.infinity,
               color: Colors.grey.shade100,
               alignment: Alignment.center,
-              child: (product.image != null && product.image!.isNotEmpty)
+              child:
+                  (widget.product.image != null &&
+                      widget.product.image!.isNotEmpty)
                   ? Image.network(
-                      product.image!,
+                      widget.product.image!,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) =>
                           const Icon(Icons.broken_image, size: 100),
@@ -41,7 +74,7 @@ class DetailScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    product.name ?? 'No Name',
+                    widget.product.name ?? 'No Name',
                     style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -49,7 +82,7 @@ class DetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    product.price ?? '',
+                    widget.product.price ?? '',
                     style: const TextStyle(
                       fontSize: 20,
                       color: Colors.blueAccent,
@@ -63,10 +96,10 @@ class DetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    product.description ?? 'No description available.',
+                    widget.product.description ?? 'No description available.',
                     style: const TextStyle(fontSize: 16, color: Colors.black87),
                   ),
-                  if (product.specs != null) ...[
+                  if (widget.product.specs != null) ...[
                     const SizedBox(height: 24),
                     const Text(
                       'Specifications :',
@@ -76,7 +109,7 @@ class DetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildSpecsList(product.specs!),
+                    _buildSpecsList(widget.product.specs!),
                   ],
                   const SizedBox(height: 100),
                 ],
@@ -90,10 +123,10 @@ class DetailScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
-              addToCart(product);
+              addToCart(widget.product);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('${product.name} sepete eklendi!'),
+                  content: Text('${widget.product.name} sepete eklendi!'),
                   backgroundColor: Colors.green,
                 ),
               );

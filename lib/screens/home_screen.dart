@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'cart_screen.dart';
 import 'detail_screen.dart';
 import '../models/product.dart';
+import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         products = productResponse.data ?? [];
+        allProducts = products;
       });
     } catch (e) {
       debugPrint("JSON Load Error: $e");
@@ -46,6 +48,15 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen()),
+              );
+            },
+            icon: const Icon(Icons.person_outline),
+          ),
           IconButton(
             onPressed: () {
               Navigator.push(
