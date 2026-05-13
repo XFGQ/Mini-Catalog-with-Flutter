@@ -74,8 +74,6 @@ class Data {
   }
 }
 
-List<Data> cartItems = [];
-
 class Specs {
   String? chip;
   String? material;
@@ -161,6 +159,7 @@ class Specs {
     sensing = json['sensing'];
     size = json['size'];
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['chip'] = chip;
@@ -190,5 +189,28 @@ class Specs {
     data['sensing'] = sensing;
     data['size'] = size;
     return data;
+  }
+}
+
+class CartItem {
+  final Data product;
+  int quantity;
+
+  CartItem({required this.product, this.quantity = 1});
+}
+
+List<CartItem> cartItems = [];
+
+void addToCart(Data product) {
+  bool isFound = false;
+  for (var item in cartItems) {
+    if (item.product.id == product.id) {
+      item.quantity++;
+      isFound = true;
+      break;
+    }
+  }
+  if (!isFound) {
+    cartItems.add(CartItem(product: product));
   }
 }

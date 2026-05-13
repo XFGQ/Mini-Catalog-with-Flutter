@@ -85,13 +85,12 @@ class DetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      // --- SEPETE EKLE BUTONU BURADA ---
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: () {
-              cartItems.add(product); // Global listeye ekle
+              addToCart(product);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text('${product.name} sepete eklendi!'),
