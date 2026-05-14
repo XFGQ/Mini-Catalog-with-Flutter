@@ -1,6 +1,7 @@
 # Mini Catalog 
 
 *username: admin, password: admin123*
+
 **Mini Catalog**, Flutter ile geliştirilmiş, modern ve kullanıcı deneyimi odaklı bir e-ticaret/katalog uygulamasıdır. Bu proje, temel bir katalog uygulamasının ötesine geçerek; güvenli kimlik doğrulama, yerel veri kalıcılığı ve gelişmiş filtreleme mekanizmaları gibi profesyonel özellikleri barındırır.
 
 ## Özellikler
