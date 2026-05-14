@@ -1,5 +1,6 @@
-# Mini Catalog
+# Mini Catalog 
 
+*username: admin, password: admin123*
 **Mini Catalog**, Flutter ile geliştirilmiş, modern ve kullanıcı deneyimi odaklı bir e-ticaret/katalog uygulamasıdır. Bu proje, temel bir katalog uygulamasının ötesine geçerek; güvenli kimlik doğrulama, yerel veri kalıcılığı ve gelişmiş filtreleme mekanizmaları gibi profesyonel özellikleri barındırır.
 
 ## Özellikler
@@ -42,7 +43,6 @@ git clone https://github.com/XFGQ/Mini-Catalog-with-Flutter.git
 cd Mini-Catalog-with-Flutter
 flutter pub get
 ```
-
 ### Windows
 Windows ortamında uygulamayı test etmek için iki seçeneğiniz bulunmaktadır:
 
@@ -52,6 +52,8 @@ Windows ortamında uygulamayı test etmek için iki seçeneğiniz bulunmaktadır
 flutter run
 ```
 
+
+*username: admin, password: admin123*
 **2. Yerel Windows Masaüstü Uygulaması Olarak Çalıştırmak:**
 ```bash
 flutter run -d windows
@@ -71,6 +73,8 @@ flutter run
 ```bash
 flutter run -d linux
 ```
+
+*username: admin, password: admin123*
 ### Android Build için
 
 **1. Terminali açın**
